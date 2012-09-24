@@ -1,0 +1,19 @@
+﻿body
+{
+	background-color: #D5E1DD;
+	color: #2B3E42;
+	text-align: center;
+	font-family: 'Doppio One' , sans-serif;
+}
+
+h1
+{
+	margin-top: 10%;
+	font-size: 35px;
+}
+
+#work-days {
+    font-size: 175px;
+    background-color: #D5E1DD;
+    height: 220px;
+}

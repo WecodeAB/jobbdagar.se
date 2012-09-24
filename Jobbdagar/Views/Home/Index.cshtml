@@ -1,0 +1,45 @@
+﻿<h1>jobbdagar.se</h1>
+<select id="yearselect">
+    @for (int year = DateTime.Now.AddMonths(6).Year + 1; year >= DateTime.Now.AddYears(-5).Year; year--)
+    {
+        <option value="@year" @{ if(year == DateTime.Now.Year){ <text>selected</text> }} >@year</option>
+    }
+</select>
+<select id="monthselect">
+    <option value="0">Hela året</option>
+    @for (int i=1; i<=12; i++)
+    {
+        DateTime month = new DateTime(1970, i, 1);
+        <option value="@i" >@month.ToString("MMMM")</option>
+    }
+</select>
+<div id="work-days"></div>
+<div id="holidays"></div>
+
+@section scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            GetDays();
+
+            $("#yearselect, #monthselect").change(function () {
+                GetDays(true);
+            });
+        });
+
+        function GetDays(highlight) {
+            $.getJSON("api/year/" + $("#yearselect").val() + "?month=" + $("#monthselect").val(),
+            function (data) {
+                $("#work-days").html(data.NumberOfDays);
+                $("#holidays").empty();
+                $.each(data.Holidays, function (i) {
+                    $("#holidays").append("<span title='" + this.Date+ "'>" + this.DateName + "<span><br />");
+                });
+                
+                if(highlight)
+                    $("#work-days").effect("highlight", {}, 500);
+            });
+        }
+    </script>
+    <link href='http://fonts.googleapis.com/css?family=Doppio+One' rel='stylesheet' type='text/css'>
+}
